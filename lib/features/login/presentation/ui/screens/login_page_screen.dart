@@ -16,7 +16,7 @@ class LoginPageScreen extends StatelessWidget {
       ),
       body: Center(
         child: ElevatedButton(
-          onPressed: () => context.goNamed(ScreenNames.profilePage),
+          onPressed: () => context.goNamed(ScreenNames.homePage),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
