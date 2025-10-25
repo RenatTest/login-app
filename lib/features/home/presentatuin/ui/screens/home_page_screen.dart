@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:login_app/core/network/login_register_api/login_register_api_firebase/login_register_api_firebase.dart';
 
 class HomePageScreen extends StatelessWidget {
   const HomePageScreen({super.key});
@@ -32,7 +33,10 @@ class HomePageScreen extends StatelessWidget {
               ),
             ),
             ElevatedButton(
-              onPressed: () => context.pop(),
+              onPressed: () async {
+                await LoginRegisterApiFirebase().logOut();
+                context.pop();
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent,
                 shadowColor: Colors.transparent,
