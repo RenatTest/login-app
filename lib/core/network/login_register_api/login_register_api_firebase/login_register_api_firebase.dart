@@ -8,17 +8,25 @@ class LoginRegisterApiFirebase implements LoginRegisterApiBase {
     required String password,
   }) async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      User? user = userCredential.user;
+      if (user != null) {
+        String? idToken = await user.getIdToken();
+        print('ID Token: $idToken');
+      }
     } on FirebaseAuthException catch (exception) {
       try {
         if (exception.code == 'email-already-in-use') {
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: email,
-            password: password,
-          );
+          UserCredential userCredential = await FirebaseAuth.instance
+              .signInWithEmailAndPassword(email: email, password: password);
+
+          User? user = userCredential.user;
+          if (user != null) {
+            String? idToken = await user.getIdToken();
+            print('ID Token: $idToken');
+          }
         }
       } catch (error) {
         throw CustomServerError(

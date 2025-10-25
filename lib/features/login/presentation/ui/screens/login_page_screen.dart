@@ -133,9 +133,6 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
                         FocusScope.of(context).requestFocus(blankFocusNode);
-                        print(email);
-                        print(password);
-
                         try {
                           await LoginRegisterApiFirebase().loginRegister(
                             email: emailController.text,
