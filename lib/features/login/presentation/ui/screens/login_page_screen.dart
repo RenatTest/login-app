@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:login_app/core/network/login_register_api/login_register_api_firebase/login_register_api_firebase.dart';
+import 'package:login_app/core/storage/secure_storage/secure_storage.dart';
 import 'package:login_app/features/app/page_names.dart';
 
 class LoginPageScreen extends StatefulWidget {
@@ -17,6 +18,19 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
   String? password;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  Future<void> chackAuth() async {
+    final userFromStorage = await SecureStorage.instance.getToken();
+    if (userFromStorage != '') {
+      context.goNamed(ScreenNames.homePage);
+    }
+  }
+
+  @override
+  void initState() {
+    chackAuth();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
