@@ -17,7 +17,42 @@ class HomePageScreen extends StatelessWidget {
           onPressed: () => context.pop(),
         ),
       ),
-      body: Center(child: Text('User profile')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          spacing: 10,
+          children: [
+            Text(
+              'Welcome, User',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () => context.pop(),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                shadowColor: Colors.transparent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                side: BorderSide(width: 2.0, color: Colors.white),
+              ),
+              child: Text(
+                'Logout',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
