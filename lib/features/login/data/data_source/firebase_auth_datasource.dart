@@ -46,7 +46,7 @@ class FirebaseAuthDataSource {
 
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
-    await SecureStorage.instance.saveToken('');
+    await SecureStorage.instance.deleteToken();
   }
 
   Stream<UserEntity?> get user {

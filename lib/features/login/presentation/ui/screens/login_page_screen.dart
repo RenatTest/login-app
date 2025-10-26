@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPageScreen> {
       ),
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state.user != null) {
+          if (state.user?.token != null) {
             context.goNamed(ScreenNames.homePage);
           }
           if (state.error != null) {
