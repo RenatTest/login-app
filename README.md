@@ -4,6 +4,7 @@ This is a simple project for login/register to Firebase with email and password.
 
 ## PROJECT STRUCTURE
 
+```plaintext
 lib
 ├── core
 │   └── storage
@@ -58,3 +59,4 @@ lib
 - DI - get_it
 - Token Storage - flutter_secure_storage
 - API - Firebase
+```
