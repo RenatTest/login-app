@@ -1,0 +1,70 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:login_app/core/storage/secure_storage/secure_storage.dart';
+import 'package:login_app/features/login/domain/entities/user_entity.dart';
+
+class FirebaseAuthDataSource {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  Future<UserEntity?> signIn(String email, String password) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      final user = userCredential.user;
+      if (user != null) {
+        final token = await user.getIdToken();
+        await SecureStorage.instance.saveToken(token);
+        return UserEntity(token: token, email: user.email);
+      }
+      return null;
+    } on FirebaseAuthException catch (exception) {
+      if (exception.code == 'email-already-in-use') {
+        try {
+          UserCredential userCredential = await FirebaseAuth.instance
+              .signInWithEmailAndPassword(email: email, password: password);
+
+          final user = userCredential.user;
+          if (user != null) {
+            final token = await user.getIdToken();
+            await SecureStorage.instance.saveToken(token);
+            return UserEntity(token: token, email: user.email);
+          }
+          return null;
+        } on FirebaseAuthException catch (exception) {
+          throw CustomServerError(
+            errorMessage:
+                'login: ${exception.code == 'invalid-credential' ? 'Wrong password' : exception.code}',
+          );
+        }
+      } else {
+        throw CustomServerError(errorMessage: 'register: ${exception.code}');
+      }
+    } catch (error) {
+      throw CustomServerError(errorMessage: 'unknown: ${error.toString()}');
+    }
+  }
+
+  Future<void> signOut() async {
+    await _firebaseAuth.signOut();
+    await SecureStorage.instance.deleteToken();
+  }
+
+  Stream<UserEntity?> get user {
+    return _firebaseAuth.authStateChanges().asyncMap((user) async {
+      if (user != null) {
+        final token = await user.getIdToken();
+        return UserEntity(token: token, email: user.email);
+      }
+      return null;
+    });
+  }
+}
+
+class CustomServerError implements Exception {
+  CustomServerError({required this.errorMessage});
+
+  final String errorMessage;
+
+  @override
+  String toString() => 'Error $errorMessage';
+}

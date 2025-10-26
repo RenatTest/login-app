@@ -4,18 +4,17 @@ import 'package:login_app/features/login/presentation/ui/screens/login_page_scre
 import 'package:login_app/features/home/presentatuin/ui/screens/home_page_screen.dart';
 
 final router = GoRouter(
+  initialLocation: '/',
   routes: [
     GoRoute(
       path: '/',
       name: ScreenNames.loginPage,
       builder: (context, state) => const LoginPageScreen(),
-      routes: [
-        GoRoute(
-          path: 'home-page',
-          name: ScreenNames.homePage,
-          builder: (context, state) => const HomePageScreen(),
-        ),
-      ],
+    ),
+    GoRoute(
+      path: '/home-page',
+      name: ScreenNames.homePage,
+      builder: (context, state) => const HomePageScreen(),
     ),
   ],
 );
