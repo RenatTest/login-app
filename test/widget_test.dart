@@ -7,12 +7,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:login_app/features/login/data/data_source/firebase_auth_datasource.dart';
+import 'package:login_app/features/login/data/repositories/auth_repository_impl.dart';
+import 'package:login_app/features/login/domain/usecases/sign_in_usecase.dart';
+
 import 'package:login_app/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    final dataSource = FirebaseAuthDataSource();
+    final repository = AuthRepositoryImpl(dataSource);
+    final signInUseCase = SignInUseCase(repository);
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+    await tester.pumpWidget(
+      MyApp(repository: repository, signInUseCase: signInUseCase),
+    );
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
