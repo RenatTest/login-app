@@ -14,11 +14,11 @@ class FirebaseAuthDataSource {
       if (user != null) {
         final token = await user.getIdToken();
         await SecureStorage.instance.saveToken(token);
-        return UserEntity(uid: user.uid, email: user.email);
+        return UserEntity(token: token, email: user.email);
       }
       return null;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'email-already-in-use') {
+    } on FirebaseAuthException catch (exception) {
+      if (exception.code == 'email-already-in-use') {
         try {
           UserCredential userCredential = await FirebaseAuth.instance
               .signInWithEmailAndPassword(email: email, password: password);
@@ -27,21 +27,20 @@ class FirebaseAuthDataSource {
           if (user != null) {
             final token = await user.getIdToken();
             await SecureStorage.instance.saveToken(token);
-            return UserEntity(uid: user.uid, email: user.email);
+            return UserEntity(token: token, email: user.email);
           }
           return null;
-        } on FirebaseAuthException catch (loginError) {
+        } on FirebaseAuthException catch (exception) {
           throw CustomServerError(
-            errorMessage: 'Login error: ${loginError.message}',
+            errorMessage:
+                'login: ${exception.code == 'invalid-credential' ? 'Wrong password' : exception.code}',
           );
         }
       } else {
-        throw CustomServerError(errorMessage: 'Register error: ${e.message}');
+        throw CustomServerError(errorMessage: 'register: ${exception.code}');
       }
     } catch (error) {
-      throw CustomServerError(
-        errorMessage: 'Unknown error: ${error.toString()}',
-      );
+      throw CustomServerError(errorMessage: 'unknown: ${error.toString()}');
     }
   }
 
@@ -51,10 +50,13 @@ class FirebaseAuthDataSource {
   }
 
   Stream<UserEntity?> get user {
-    return _firebaseAuth.authStateChanges().map(
-      (user) =>
-          user != null ? UserEntity(uid: user.uid, email: user.email) : null,
-    );
+    return _firebaseAuth.authStateChanges().asyncMap((user) async {
+      if (user != null) {
+        final token = await user.getIdToken();
+        return UserEntity(token: token, email: user.email);
+      }
+      return null;
+    });
   }
 }
 
@@ -64,5 +66,5 @@ class CustomServerError implements Exception {
   final String errorMessage;
 
   @override
-  String toString() => 'CustomServerError: $errorMessage';
+  String toString() => 'Error $errorMessage';
 }

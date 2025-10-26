@@ -7,20 +7,37 @@ import 'package:login_app/features/home/presentatuin/ui/screens/home_page_screen
 
 final router = GoRouter(
   initialLocation: '/',
-  redirect: (context, state) {
-    final cubit = BlocProvider.of<AuthCubit>(context);
-    final user = cubit.state.user;
+  // redirect: (context, state) {
+  //   final token = context.read<AuthCubit>().state.user?.token;
 
-    if (user == null && state.matchedLocation == '/home-page') {
-      return '/';
-    }
+  //   if (token == null && state.matchedLocation != '/') {
+  //     return '/'; // переходимо на login
+  //   }
 
-    if (user != null && state.matchedLocation == '/') {
-      return '/home-page';
-    }
+  //   if (token != null && state.matchedLocation == '/') {
+  //     return '/home-page'; // переходимо на home
+  //   }
 
-    return null;
-  },
+  //   return null; // залишаємо поточний маршрут
+  // },
+  // redirect: (context, state) {
+  //   final cubit = BlocProvider.of<AuthCubit>(context);
+  //   final token = cubit.state.user?.token;
+
+  //   if (token == null) {
+  //     return '/';
+  //   }
+
+  //   // if (token == null && state.matchedLocation == '/home-page') {
+  //   //   return '/';
+  //   // }
+
+  //   // if (token != null && state.matchedLocation == '/') {
+  //   //   return '/home-page';
+  //   // }
+
+  //   return null;
+  // },
   routes: [
     GoRoute(
       path: '/',

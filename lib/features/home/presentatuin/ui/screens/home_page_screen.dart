@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:login_app/features/app/page_names.dart';
 import 'package:login_app/features/login/presentation/cubit/auth_cubit.dart';
 
 class HomePageScreen extends StatelessWidget {
@@ -31,7 +33,11 @@ class HomePageScreen extends StatelessWidget {
               ),
             ),
             ElevatedButton(
-              onPressed: () => context.read<AuthCubit>().signOut(),
+              // onPressed: () => context.read<AuthCubit>().signOut(),
+              onPressed: () async {
+                await context.read<AuthCubit>().signOut();
+                context.goNamed(ScreenNames.loginPage);
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent,
                 shadowColor: Colors.transparent,

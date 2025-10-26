@@ -1,6 +1,6 @@
 class UserEntity {
-  final String uid;
+  final String? token;
   final String? email;
 
-  UserEntity({required this.uid, this.email});
+  UserEntity({this.token, this.email});
 }
