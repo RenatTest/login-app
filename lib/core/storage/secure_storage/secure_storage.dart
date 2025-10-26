@@ -18,12 +18,4 @@ class SecureStorage {
   Future<String> getToken() async {
     return await _secureStorage.read(key: SecureStorageKeys.token) ?? '';
   }
-
-  Future<void> saveUserEmail(String? userEmail) async {
-    await _secureStorage.write(key: SecureStorageKeys.user, value: userEmail);
-  }
-
-  Future<String> getUserEmail() async {
-    return await _secureStorage.read(key: SecureStorageKeys.user) ?? '';
-  }
 }

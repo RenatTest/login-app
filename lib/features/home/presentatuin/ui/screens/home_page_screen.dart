@@ -1,44 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:login_app/core/network/login_register_api/login_register_api_firebase/login_register_api_firebase.dart';
-import 'package:login_app/core/storage/secure_storage/secure_storage.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:login_app/features/login/presentation/cubit/auth_cubit.dart';
 
-class HomePageScreen extends StatefulWidget {
+class HomePageScreen extends StatelessWidget {
   const HomePageScreen({super.key});
 
   @override
-  State<HomePageScreen> createState() => _HomePageScreenState();
-}
-
-class _HomePageScreenState extends State<HomePageScreen> {
-  String user = '';
-  bool loading = true;
-
-  Future<void> getUser() async {
-    final userFromStorage = await SecureStorage.instance.getUserEmail();
-    setState(() {
-      user = userFromStorage;
-    });
-  }
-
-  @override
-  void initState() {
-    getUser();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final user = context.watch<AuthCubit>().state.user;
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text('Home Page', style: TextStyle(color: Colors.white)),
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop(),
-        ),
       ),
       body: Center(
         child: Column(
@@ -47,7 +23,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
           spacing: 10,
           children: [
             Text(
-              'Welcome, $user',
+              'Welcome ${user?.email ?? ""}',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -55,12 +31,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
               ),
             ),
             ElevatedButton(
-              onPressed: () async {
-                await LoginRegisterApiFirebase().logOut();
-                await SecureStorage.instance.saveToken('');
-                await SecureStorage.instance.saveUserEmail('');
-                context.pop();
-              },
+              onPressed: () => context.read<AuthCubit>().signOut(),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent,
                 shadowColor: Colors.transparent,
