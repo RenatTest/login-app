@@ -32,7 +32,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => AuthCubit(signInUseCase, repository),
-      child: MaterialApp.router(routerConfig: router),
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        routerConfig: router,
+      ),
     );
   }
 }

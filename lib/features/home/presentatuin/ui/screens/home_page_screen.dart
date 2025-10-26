@@ -33,9 +33,9 @@ class HomePageScreen extends StatelessWidget {
               ),
             ),
             ElevatedButton(
-              // onPressed: () => context.read<AuthCubit>().signOut(),
               onPressed: () async {
                 await context.read<AuthCubit>().signOut();
+                // ignore: use_build_context_synchronously
                 context.goNamed(ScreenNames.loginPage);
               },
               style: ElevatedButton.styleFrom(

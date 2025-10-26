@@ -164,7 +164,10 @@ class _LoginPageState extends State<LoginPageScreen> {
                       ),
 
                       state.loading
-                          ? const CircularProgressIndicator()
+                          ? const CircularProgressIndicator(
+                              color: Colors.black,
+                              backgroundColor: Colors.white,
+                            )
                           : ElevatedButton(
                               onPressed: () async {
                                 if (formKey.currentState!.validate()) {
@@ -180,7 +183,6 @@ class _LoginPageState extends State<LoginPageScreen> {
                                   formKey.currentState!.reset();
                                   email = '';
                                   password = '';
-                                  // context.goNamed(ScreenNames.homePage);
                                 }
                               },
                               style: ElevatedButton.styleFrom(
