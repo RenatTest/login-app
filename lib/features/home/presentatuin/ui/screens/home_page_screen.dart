@@ -25,7 +25,7 @@ class HomePageScreen extends StatelessWidget {
           spacing: 10,
           children: [
             Text(
-              'Welcome ${user?.email ?? ""}',
+              'Welcome ${user?.email ?? ''}',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
