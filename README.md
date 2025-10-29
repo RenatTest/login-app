@@ -51,6 +51,7 @@ lib
 │   └── app_router.dart
 └── utils
     └── firebase_options.dart
+```
 
 ## PROJECT TECHNOLOGIES
 
@@ -59,4 +60,3 @@ lib
 - DI - get_it
 - Token Storage - flutter_secure_storage
 - API - Firebase
-```
