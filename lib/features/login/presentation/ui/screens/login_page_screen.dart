@@ -134,6 +134,8 @@ class _LoginPageState extends State<LoginPageScreen> {
                                   field.didChange(passwordValue);
                                   password = passwordValue;
                                 },
+                                obscureText: true,
+                                obscuringCharacter: '*',
                                 style: const TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                   labelText: 'Password',
