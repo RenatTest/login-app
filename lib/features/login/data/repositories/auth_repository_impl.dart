@@ -8,13 +8,28 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this.dataSource);
 
   @override
-  Future<UserEntity?> signIn(String email, String password) {
-    return dataSource.signIn(email, password);
+  Future<UserEntity?> signIn(String email, String password) async {
+    final firebaseUser = await dataSource.signIn(email, password);
+    if (firebaseUser != null) {
+      final token = await firebaseUser.getIdToken();
+      return UserEntity(token: token, email: firebaseUser.email);
+    }
+    return null;
   }
 
   @override
-  Future<void> signOut() => dataSource.signOut();
+  Future<void> signOut() async {
+    await dataSource.signOut();
+  }
 
   @override
-  Stream<UserEntity?> get user => dataSource.user;
+  Stream<UserEntity?> get user {
+    return dataSource.user.asyncMap((firebaseUser) async {
+      if (firebaseUser != null) {
+        final token = await firebaseUser.getIdToken();
+        return UserEntity(token: token, email: firebaseUser.email);
+      }
+      return null;
+    });
+  }
 }
