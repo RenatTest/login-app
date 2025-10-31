@@ -1,11 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:login_app/core/storage/secure_storage/secure_storage.dart';
-import 'package:login_app/features/login/domain/entities/user_entity.dart';
 
 class FirebaseAuthDataSource {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future<UserEntity?> signIn(String email, String password) async {
+  Future<User?> signIn(String email, String password) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -14,7 +13,7 @@ class FirebaseAuthDataSource {
       if (user != null) {
         final token = await user.getIdToken();
         await SecureStorage.instance.saveToken(token);
-        return UserEntity(token: token, email: user.email);
+        return userCredential.user;
       }
       return null;
     } on FirebaseAuthException catch (exception) {
@@ -27,7 +26,7 @@ class FirebaseAuthDataSource {
           if (user != null) {
             final token = await user.getIdToken();
             await SecureStorage.instance.saveToken(token);
-            return UserEntity(token: token, email: user.email);
+            return userCredential.user;
           }
           return null;
         } on FirebaseAuthException catch (exception) {
@@ -49,11 +48,10 @@ class FirebaseAuthDataSource {
     await SecureStorage.instance.deleteToken();
   }
 
-  Stream<UserEntity?> get user {
+  Stream<User?> get user {
     return _firebaseAuth.authStateChanges().asyncMap((user) async {
       if (user != null) {
-        final token = await user.getIdToken();
-        return UserEntity(token: token, email: user.email);
+        return user;
       }
       return null;
     });

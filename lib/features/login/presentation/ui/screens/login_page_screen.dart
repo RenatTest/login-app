@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:login_app/features/app/page_names.dart';
 import 'package:login_app/features/login/presentation/cubit/auth_cubit.dart';
 import 'package:login_app/features/login/presentation/cubit/auth_state.dart';
+import 'package:login_app/features/login/presentation/ui/widgets/login_button.dart';
 
 class LoginPageScreen extends StatefulWidget {
   const LoginPageScreen({super.key});
@@ -134,6 +135,8 @@ class _LoginPageState extends State<LoginPageScreen> {
                                   field.didChange(passwordValue);
                                   password = passwordValue;
                                 },
+                                obscureText: true,
+                                obscuringCharacter: '*',
                                 style: const TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                   labelText: 'Password',
@@ -168,7 +171,8 @@ class _LoginPageState extends State<LoginPageScreen> {
                               color: Colors.black,
                               backgroundColor: Colors.white,
                             )
-                          : ElevatedButton(
+                          : LoginButton(
+                              buttonText: 'Login / Register',
                               onPressed: () async {
                                 if (formKey.currentState!.validate()) {
                                   FocusScope.of(
@@ -185,25 +189,6 @@ class _LoginPageState extends State<LoginPageScreen> {
                                   password = '';
                                 }
                               },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.transparent,
-                                shadowColor: Colors.transparent,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                side: BorderSide(
-                                  width: 2.0,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              child: Text(
-                                'Login / Register',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
                             ),
                     ],
                   ),
