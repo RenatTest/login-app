@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:login_app/core/storage/secure_storage/secure_storage.dart';
-// import 'package:login_app/features/login/domain/entities/user_entity.dart';
 
 class FirebaseAuthDataSource {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
